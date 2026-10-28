@@ -1,0 +1,56 @@
+{
+  "mapControls": {
+    "searchPlace": "Rechercher un lieu",
+    "home": "Accueil",
+    "zoonIn": "Zoom avant",
+    "zoomOut": "Zoom arrière",
+    "currentLocation": "Emplacement actuel",
+    "activeFeatureInfo": "Information sur l’entité active",
+    "measurement": {
+      "header": "Mesure",
+      "firstOption": "Superficie",
+      "secondOption": "Longueur"
+    },
+    "layerManagement": "Gestion des couches",
+    "legend": "Légende",
+    "clearMap": "Effacer la carte"
+  },
+  "baseMaps": {
+    "header": "Carte de base",
+    "osm": "OpenStreetMap",
+    "topo": "Carte topographique",
+    "satelite": "Imagerie mondiale"
+  },
+  "sideBar": {
+    "menus": {
+      "home": "Accueil",
+      "runScreen": "Écran d'exécution",
+      "userManagement": "Gestion des utilisateurs",
+      "runHistory": "Voir l’historique des exécutions",
+      "logOut": "Se déconnecter",
+      "changeLanguage": "Paramètres de langue"
+    }
+  },
+  "pages": {
+    "runScreen": {
+      "inputLocation": "Entrer l’emplacement",
+      "draw": "Dessiner",
+      "uploadKml": "Télécharger KML",
+      "addCoordinate": "Ajouter une coordonnée",
+      "reportHeader": "Rapport de dépistage EBS",
+      "hideMap": "Masquer la carte",
+      "viewMap": "Afficher la carte",
+      "reportDownload": "Télécharger"
+    },
+    "userManagement": {
+      "header": "Gestion des utilisateurs",
+      "allHistory": "Voir tout l’historique des exécutions",
+      "addUser": "Ajouter un utilisateur",
+      "editUser": "Modifier l’utilisateur",
+      "goBack": "Retour",
+      "saveChanges": "Enregistrer les modifications",
+      "viewQueryLocatio": "Voir l’emplacement de la requête",
+      "queryRunHistory": "Historique des requêtes"
+    }
+  }
+}

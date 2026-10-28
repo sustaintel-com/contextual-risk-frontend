@@ -1,0 +1,69 @@
+{
+    "mapControls": {
+        "searchPlace": "Search Place",
+        "home": "Home",
+        "zoonIn": "Zoom In",
+        "zoomOut": "Zoom Out",
+        "currentLocation": "Current Location",
+        "activeFeatureInfo": "Active feature info",
+        "measurement": {
+            "header": "Measurement",
+            "firstOption": "Area",
+            "secondOption": "Length"
+        },
+        "layerManagement": "Layer Management",
+        "legend": "Legend",
+        "clearMap": "Clear Map"
+    },
+    "baseMaps": {
+        "header": "Base Map",
+        "osm": "Open Street Map",
+        "topo": "Topograp.. Map",
+        "satelite": "World Imagery"
+    },
+    "sideBar": {
+        "menus": {
+            "home":"Home",
+            "runScan":"Run Scan",
+            "runScreen":"Run Screen",
+            "userManagement":"User Management",
+            "projectManagement":"Project Management",
+            "siteManagement":"Site Management",
+            "runHistory":"View Run History",
+            "logOut":"Logout",
+            "changeLanguage":"Language Settings"
+        }
+    },
+    "pages":{
+        "runScreen":{
+            "inputLocation":"Screening Input",
+            "draw":"Draw",
+            "uploadKml":"Upload KML",
+            "addCoordinate":"Add Coordinate",
+            "reportHeader":"EBS Screening Report",
+            "hideMap":"Hide Map",
+            "viewMap":"View Map",
+            "reportDownload":"Download"
+        },
+        "userManagement":{
+            "header":"User Management",
+            "allHistory":"View All Run History",
+            "addUser":"Add User",
+            "editUser":"Edit User",
+            "goBack":"Go Back",
+            "saveChanges":"Save Changes",
+            "viewQueryLocatio":"View Query Location",
+            "queryRunHistory":"Query Run History",
+            "addCorporate":"Add Corporate",
+            "editCorporate":"Edit Corporate"
+        },
+        "projectManagement":{
+            "header":"Project Management",
+            "addProject":"Add Project"
+        },
+        "siteManagement":{
+            "header":"Site Management"
+        }
+
+    }
+}

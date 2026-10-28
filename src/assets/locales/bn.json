@@ -1,0 +1,56 @@
+{
+  "mapControls": {
+    "searchPlace": "স্থান অনুসন্ধান",
+    "home": "হোম",
+    "zoonIn": "জুম ইন",
+    "zoomOut": "জুম আউট",
+    "currentLocation": "বর্তমান অবস্থান",
+    "activeFeatureInfo": "সক্রিয় বৈশিষ্ট্যের তথ্য",
+    "measurement": {
+      "header": "পরিমাপ",
+      "firstOption": "এলাকা",
+      "secondOption": "দৈর্ঘ্য"
+    },
+    "layerManagement": "লেয়ার ম্যানেজমেন্ট",
+    "legend": "লেজেন্ড",
+    "clearMap": "মানচিত্র পরিষ্কার করুন"
+  },
+  "baseMaps": {
+    "header": "বেস মানচিত্র",
+    "osm": "ওপেন স্ট্রিট ম্যাপ",
+    "topo": "টপোগ্রাফিক মানচিত্র",
+    "satelite": "বিশ্ব ইমেজারি"
+  },
+  "sideBar": {
+    "menus": {
+      "home": "হোম",
+      "runScreen": "রান স্ক্রিন",
+      "userManagement": "ব্যবহারকারী ব্যবস্থাপনা",
+      "runHistory": "রান ইতিহাস দেখুন",
+      "logOut": "লগআউট",
+      "changeLanguage": "ভাষা সেটিংস"
+    }
+  },
+  "pages": {
+    "runScreen": {
+      "inputLocation": "অবস্থান লিখুন",
+      "draw": "আঁকুন",
+      "uploadKml": "KML আপলোড করুন",
+      "addCoordinate": "কোঅর্ডিনেট যোগ করুন",
+      "reportHeader": "EBS স্ক্রিনিং রিপোর্ট",
+      "hideMap": "মানচিত্র লুকান",
+      "viewMap": "মানচিত্র দেখুন",
+      "reportDownload": "ডাউনলোড"
+    },
+    "userManagement": {
+      "header": "ব্যবহারকারী ব্যবস্থাপনা",
+      "allHistory": "সমস্ত রান ইতিহাস দেখুন",
+      "addUser": "ব্যবহারকারী যোগ করুন",
+      "editUser": "ব্যবহারকারী সম্পাদনা করুন",
+      "goBack": "ফিরে যান",
+      "saveChanges": "পরিবর্তন সংরক্ষণ করুন",
+      "viewQueryLocatio": "কোয়েরি অবস্থান দেখুন",
+      "queryRunHistory": "কোয়েরি রান ইতিহাস"
+    }
+  }
+}

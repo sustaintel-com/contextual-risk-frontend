@@ -1,0 +1,56 @@
+{
+  "mapControls": {
+    "searchPlace": "स्थान खोजें",
+    "home": "मुखपृष्ठ",
+    "zoonIn": "ज़ूम इन",
+    "zoomOut": "ज़ूम आउट",
+    "currentLocation": "वर्तमान स्थान",
+    "activeFeatureInfo": "सक्रिय फीचर जानकारी",
+    "measurement": {
+      "header": "माप",
+      "firstOption": "क्षेत्रफल",
+      "secondOption": "लंबाई"
+    },
+    "layerManagement": "लेयर प्रबंधन",
+    "legend": "लीजेंड",
+    "clearMap": "नक्शा साफ़ करें"
+  },
+  "baseMaps": {
+    "header": "बेस मैप",
+    "osm": "ओपन स्ट्रीट मैप",
+    "topo": "टोपोग्राफिक मानचित्र",
+    "satelite": "विश्व इमेजरी"
+  },
+  "sideBar": {
+    "menus": {
+      "home": "मुखपृष्ठ",
+      "runScreen": "रन स्क्रीन",
+      "userManagement": "उपयोगकर्ता प्रबंधन",
+      "runHistory": "रन इतिहास देखें",
+      "logOut": "लॉगआउट",
+      "changeLanguage": "भाषा सेटिंग्स"
+    }
+  },
+  "pages": {
+    "runScreen": {
+      "inputLocation": "स्थान दर्ज करें",
+      "draw": "आरेखण करें",
+      "uploadKml": "KML अपलोड करें",
+      "addCoordinate": "निर्देशांक जोड़ें",
+      "reportHeader": "ईबीएस स्क्रीनिंग रिपोर्ट",
+      "hideMap": "नक्शा छुपाएँ",
+      "viewMap": "नक्शा देखें",
+      "reportDownload": "डाउनलोड"
+    },
+    "userManagement": {
+      "header": "उपयोगकर्ता प्रबंधन",
+      "allHistory": "सभी रन इतिहास देखें",
+      "addUser": "उपयोगकर्ता जोड़ें",
+      "editUser": "उपयोगकर्ता संपादित करें",
+      "goBack": "वापस जाएँ",
+      "saveChanges": "परिवर्तन सहेजें",
+      "viewQueryLocatio": "क्वेरी स्थान देखें",
+      "queryRunHistory": "क्वेरी रन इतिहास"
+    }
+  }
+}
