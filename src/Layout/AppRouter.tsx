@@ -56,6 +56,11 @@ const AppRouter: React.FC = () => {
                             path: "add-user",
                            loader: () => requireAuth(["Admin"]),
                             element: <AddUser />,
+                        },
+                        {
+                            path: "add-user/:id",
+                           loader: () => requireAuth(["Admin"]),
+                            element: <AddUser />,
                         }
                     ]
                 },

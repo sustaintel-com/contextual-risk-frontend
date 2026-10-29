@@ -8,7 +8,6 @@ import {
   EyeOff,
   Key,
   Mail,
-  Save,
   Undo2,
   User as UserIcon,
   X,
@@ -23,18 +22,18 @@ import {
 } from "../../../helper/passwordStrengthChecker";
 import Button from "../../../components/buttons/Button";
 
-interface UserRoleOption {
-  label: string;
-  value: number;
-}
+import type {
+  IdType,
+  RoleOption,
+} from "../Services/AdminUsermanagementModel";
 
 interface UserFormData {
   fullName: string;
   username: string;
   email: string;
-  roleId: number;
-  password?: string;
-  confirmPassword?: string;
+  roleId: IdType | "";
+  password: string;
+  confirmPassword: string;
 }
 
 interface UserFormProps {
@@ -43,9 +42,10 @@ interface UserFormProps {
   control: any;
   handleSubmit: any;
   onSubmit: (data: UserFormData) => void;
-  roleOptions: UserRoleOption[];
+  roleOptions: RoleOption[];
+  rolesLoading: boolean;
+  isSubmitting: boolean;
   mode: "add" | "edit";
-  password?: string;
   passwordsMatch: boolean;
   showPassword: boolean;
   onShowPasswordChange: (show: boolean) => void;
@@ -72,13 +72,28 @@ const PasswordField: React.FC<PasswordFieldProps> = ({
   const currentPassword = field.value || "";
   const strength = getPasswordStrength(currentPassword);
 
-  const checks = {
-    length: currentPassword.length >= 6,
-    lowercase: /[a-z]/.test(currentPassword),
-    uppercase: /[A-Z]/.test(currentPassword),
-    number: /\d/.test(currentPassword),
-    special: /[^A-Za-z0-9]/.test(currentPassword),
-  };
+  const checks = [
+    {
+      label: "At least 6 characters",
+      valid: currentPassword.length >= 6,
+    },
+    {
+      label: "Lowercase letter",
+      valid: /[a-z]/.test(currentPassword),
+    },
+    {
+      label: "Uppercase letter",
+      valid: /[A-Z]/.test(currentPassword),
+    },
+    {
+      label: "Number",
+      valid: /\d/.test(currentPassword),
+    },
+    {
+      label: "Special character",
+      valid: /[^A-Za-z0-9]/.test(currentPassword),
+    },
+  ];
 
   return (
     <div className="relative">
@@ -114,27 +129,21 @@ const PasswordField: React.FC<PasswordFieldProps> = ({
       {showPopover && (
         <div className="absolute z-50 mt-1 w-full rounded-lg border border-gray-200 bg-white p-3 shadow-lg">
           <ul className="mb-3 space-y-1 text-xs">
-            {Object.entries(checks).map(([key, passed]) => {
-              const labels: Record<string, string> = {
-                length: "At least 6 characters",
-                lowercase: "Lowercase letter",
-                uppercase: "Uppercase letter",
-                number: "Number",
-                special: "Special character",
-              };
-
-              return (
-                <li
-                  key={key}
-                  className={`flex items-center gap-1 ${
-                    passed ? "text-green-600" : "text-red-600"
-                  }`}
-                >
-                  {passed ? <CheckCheck size={15} /> : <X size={15} />}
-                  {labels[key]}
-                </li>
-              );
-            })}
+            {checks.map((check) => (
+              <li
+                key={check.label}
+                className={`flex items-center gap-1 ${
+                  check.valid ? "text-green-600" : "text-red-600"
+                }`}
+              >
+                {check.valid ? (
+                  <CheckCheck size={15} />
+                ) : (
+                  <X size={15} />
+                )}
+                {check.label}
+              </li>
+            ))}
           </ul>
 
           {currentPassword && (
@@ -150,6 +159,7 @@ const PasswordField: React.FC<PasswordFieldProps> = ({
                   } ${getStrengthWidth(strength)}`}
                 />
               </div>
+
               <p className="mt-1 text-xs">
                 {getStrengthLabel(strength)}
               </p>
@@ -168,6 +178,8 @@ const UserForm: React.FC<UserFormProps> = ({
   handleSubmit,
   onSubmit,
   roleOptions,
+  rolesLoading,
+  isSubmitting,
   mode,
   passwordsMatch,
   showPassword,
@@ -180,11 +192,16 @@ const UserForm: React.FC<UserFormProps> = ({
     <div className="flex flex-col items-center p-4 font-sans">
       <div className="w-full rounded-md border border-gray-100 bg-white p-8 shadow">
         <div className="mb-6 text-left">
-          <h2 className="text-2xl font-bold text-gray-800">{title}</h2>
+          <h2 className="text-2xl font-bold text-gray-800">
+            {title}
+          </h2>
           <p className="mt-1 text-gray-500">{subtitle}</p>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-6"
+        >
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {/* Full Name */}
             <Controller
@@ -202,8 +219,7 @@ const UserForm: React.FC<UserFormProps> = ({
                 },
                 pattern: {
                   value: /^[A-Za-z\s.'-]+$/,
-                  message:
-                    "Full name can contain letters, spaces, apostrophes, periods and hyphens",
+                  message: "Enter a valid full name",
                 },
               }}
               render={({ field, fieldState }) => (
@@ -217,7 +233,7 @@ const UserForm: React.FC<UserFormProps> = ({
               )}
             />
 
-            {/* Username: directly after Full Name */}
+            {/* Username */}
             <Controller
               name="username"
               control={control}
@@ -234,7 +250,7 @@ const UserForm: React.FC<UserFormProps> = ({
                 pattern: {
                   value: /^[A-Za-z0-9._-]+$/,
                   message:
-                    "Username can contain letters, numbers, dots, underscores and hyphens",
+                    "Use only letters, numbers, dots, underscores and hyphens",
                 },
               }}
               render={({ field, fieldState }) => (
@@ -270,30 +286,36 @@ const UserForm: React.FC<UserFormProps> = ({
               )}
             />
 
-            {/* Role */}
+            {/* Dynamic Roles from GET /Role */}
             <Controller
               name="roleId"
               control={control}
               rules={{
                 required: "Role is required",
                 validate: (value) =>
-                  Number(value) > 0 || "Please select a role",
+                  value !== "" || "Please select a role",
               }}
               render={({ field, fieldState }) => (
                 <SelectionInput
                   label="Role"
-                  placeholder="Select Role"
+                  placeholder={
+                    rolesLoading
+                      ? "Loading roles..."
+                      : roleOptions.length === 0
+                        ? "No roles available"
+                        : "Select Role"
+                  }
                   options={roleOptions}
-                  value={field.value}
-                  onChange={(value: number | string) =>
-                    field.onChange(Number(value))
+                  value={field.value as any}
+                  onChange={(value: IdType | "") =>
+                    field.onChange(value)
                   }
                   error={fieldState.error?.message}
                 />
               )}
             />
 
-            {/* Password: only when adding */}
+            {/* Password: Add mode only */}
             {mode === "add" && (
               <Controller
                 name="password"
@@ -308,7 +330,7 @@ const UserForm: React.FC<UserFormProps> = ({
                     value:
                       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).+$/,
                     message:
-                      "Must include uppercase, lowercase, number and special character",
+                      "Include uppercase, lowercase, number and special character",
                   },
                 }}
                 render={({ field, fieldState }) => (
@@ -322,7 +344,7 @@ const UserForm: React.FC<UserFormProps> = ({
               />
             )}
 
-            {/* Confirm Password: only when adding */}
+            {/* Confirm Password: Add mode only */}
             {mode === "add" && (
               <Controller
                 name="confirmPassword"
@@ -356,6 +378,18 @@ const UserForm: React.FC<UserFormProps> = ({
             )}
           </div>
 
+          {rolesLoading && (
+            <p className="text-sm text-gray-500">
+              Loading available roles...
+            </p>
+          )}
+
+          {!rolesLoading && roleOptions.length === 0 && (
+            <p className="text-sm text-red-600">
+              No roles are available. Please check the role configuration.
+            </p>
+          )}
+
           <div className="flex justify-end space-x-2 pt-4">
             <Button
               label={backLabel}
@@ -367,11 +401,12 @@ const UserForm: React.FC<UserFormProps> = ({
             />
 
             <Button
-              label={submitLabel}
+              label={
+                isSubmitting ? "Saving..." : submitLabel
+              }
               size="sm"
               variant="success"
               type="submit"
-              icon={<Save size={18} />}
             />
           </div>
         </form>
