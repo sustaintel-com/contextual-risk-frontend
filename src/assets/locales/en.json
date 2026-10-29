@@ -23,13 +23,8 @@
     },
     "sideBar": {
         "menus": {
-            "home":"Home",
-            "runScan":"Run Scan",
-            "runScreen":"Run Screen",
             "userManagement":"User Management",
-            "projectManagement":"Project Management",
-            "siteManagement":"Site Management",
-            "runHistory":"View Run History",
+            "newsManagement":"News",
             "logOut":"Logout",
             "changeLanguage":"Language Settings"
         }

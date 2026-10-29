@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { UserGroup } from 'lucide-react';
+import { Newspaper, UserGroup } from 'lucide-react';
 
 
 const useMenuData = () => {
@@ -11,6 +11,12 @@ const useMenuData = () => {
       label: t("sideBar.menus.userManagement"),
       icon: <UserGroup />,
       path: '/user-management',
+      //roles: ["Admin"]
+    },
+    {
+      label: t("sideBar.menus.newsManagement"),
+      icon: <Newspaper />,
+      path: '/news',
       //roles: ["Admin"]
     }
   ];

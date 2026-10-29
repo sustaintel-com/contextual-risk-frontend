@@ -1,5 +1,5 @@
 export interface LoginFormInputs {
-    email: string;
+    username: string;
     password: string;
 }
 
@@ -10,6 +10,7 @@ export interface User {
     id?: number;
     createdAt: string; 
     updatedAt: string; 
+    roleNames: string[];
 }
 
 export interface AuthResponse {

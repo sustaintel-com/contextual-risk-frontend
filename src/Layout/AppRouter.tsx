@@ -8,6 +8,9 @@ import NotFound from "./NotFoundPage";
 import UserManagementLanding from "../Pages/user-management/UserManagementLanding";
 import AdminUserManagementList from "../Pages/user-management/admin-user-list/AdminUserManagementList";
 import AddUser from "../Pages/user-management/add-user/AddUser";
+import NewsManagementLanding from "../Pages/News/NewsManagementLanding";
+import NewsManagementList from "../Pages/News/news-list/NewsManagementList";
+import AddNewsManagement from "../Pages/News/add-news/AddNewsManagement";
 const LoginPage = lazy(() => import("../Pages/Login/Login"));
 const ResetPasswordPage = lazy(() => import("../Pages/Login/ResetPassword"));
 const Layout = lazy(() => import("../Layout/Layout"));
@@ -15,7 +18,8 @@ const Layout = lazy(() => import("../Layout/Layout"));
 const AppRouter: React.FC = () => {
    const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
     //const isLoggedIn = true;
-    const role: any = useAppSelector((state) => state.auth.userDetails?.role);
+    const role: any = useAppSelector((state) => state.auth.userDetails?.user?.roleNames[0]);
+    console.log(role)
     const requireAuth = (allowedRoles: string[]) => {
         if (!isLoggedIn) {
             return redirect("/login");
@@ -34,13 +38,13 @@ const AppRouter: React.FC = () => {
         },
                 {
             path: "/",
-            //loader: () => requireAuth(["Admin", "User"]),
+            loader: () => requireAuth(["Admin", "User"]),
             element: <Layout />,
             children: [
                
                 {
                     path: "user-management",
-                   // loader: () => requireAuth(["Admin"]),
+                   loader: () => requireAuth(["Admin"]),
                     element: (
                         <Suspense fallback={<DashLoader isRunLoader={true} text="Page is Loading..Please Wait.." />}>
                             <UserManagementLanding />
@@ -50,8 +54,25 @@ const AppRouter: React.FC = () => {
                         { index: true, element: <AdminUserManagementList /> },
                         {
                             path: "add-user",
-                           // loader: () => requireAuth(["Admin"]),
+                           loader: () => requireAuth(["Admin"]),
                             element: <AddUser />,
+                        }
+                    ]
+                },
+                {
+                    path: "news",
+                   loader: () => requireAuth(["Admin", "User"]),
+                    element: (
+                        <Suspense fallback={<DashLoader isRunLoader={true} text="Page is Loading..Please Wait.." />}>
+                            <NewsManagementLanding />
+                        </Suspense>
+                    ),
+                    children: [
+                        { index: true, element: <NewsManagementList /> },
+                        {
+                            path: "add-news",
+                           loader: () => requireAuth(["Admin", "User"]),
+                            element: <AddNewsManagement />,
                         }
                     ]
                 },

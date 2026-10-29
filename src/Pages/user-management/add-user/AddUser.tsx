@@ -1,14 +1,30 @@
-import React, { useState, useEffect } from "react";
+
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useParams } from "react-router";
+
 import { useSnackbar } from "../../../Context/SnackbarContext";
 import {
   addAdminUser,
   editAdminUser,
 } from "../Services/AdminUsermanagementService";
+
 import UserForm from "./UserForm";
-import type { AdminUserPayload, AdminUserUpdatePayload } from "../Services/AdminUsermanagementModel";
+
+import type {
+  AdminUserPayload,
+  AdminUserUpdatePayload,
+} from "../Services/AdminUsermanagementModel";
+
+interface UserFormData {
+  fullName: string;
+  username: string;
+  email: string;
+  roleId: number;
+  password?: string;
+  confirmPassword?: string;
+}
 
 const roleList: Record<string, number> = {
   Admin: 1,
@@ -20,14 +36,6 @@ const roleCatalog = [
   { label: "Admin", value: 1 },
 ];
 
-interface UserFormData {
-  email: string;
-  roleId: number;
-  password?: string;
-  name: string;
-  confirmPassword?: string;
-}
-
 const AddUser: React.FC = () => {
   const { t } = useTranslation();
   const { showSnackbar } = useSnackbar();
@@ -36,7 +44,7 @@ const AddUser: React.FC = () => {
   const location = useLocation();
 
   const user = location.state?.user;
-  const mode = id ? "edit" : "add";
+  const mode: "add" | "edit" = id ? "edit" : "add";
 
   const defaultRoleId = Number(location.state?.defaultRoleId) || 2;
   const lockRole = Boolean(location.state?.lockRole);
@@ -47,17 +55,13 @@ const AddUser: React.FC = () => {
     location.state?.from ||
     `/user-management?tab=${returnTab}&page=${returnPage}`;
 
-  const {
-    control,
-    handleSubmit,
-    watch,
-    reset,
-  } = useForm<UserFormData>({
+  const { control, handleSubmit, watch, reset } = useForm<UserFormData>({
     defaultValues: {
+      fullName: "",
+      username: "",
       email: "",
       roleId: defaultRoleId,
       password: "",
-      name: "",
       confirmPassword: "",
     },
   });
@@ -74,18 +78,23 @@ const AddUser: React.FC = () => {
   useEffect(() => {
     if (mode === "edit" && user) {
       reset({
+        fullName: user.fullName ?? "",
+        username: user.username ?? "",
         email: user.email ?? "",
-        roleId: Number(roleList[user.role]) || defaultRoleId,
+        roleId:
+          Number(user.roleId) ||
+          roleList[user.role] ||
+          defaultRoleId,
         password: "",
-        name: user.name ?? "",
         confirmPassword: "",
       });
     } else if (mode === "add") {
       reset({
+        fullName: "",
+        username: "",
         email: "",
         roleId: defaultRoleId,
         password: "",
-        name: "",
         confirmPassword: "",
       });
     }
@@ -94,7 +103,9 @@ const AddUser: React.FC = () => {
   const onSubmit = async (data: UserFormData) => {
     if (isSubmitting) return;
 
-    const finalRoleId = lockRole ? defaultRoleId : Number(data.roleId);
+    const finalRoleId = lockRole
+      ? defaultRoleId
+      : Number(data.roleId);
 
     if (mode === "add") {
       if (data.password !== data.confirmPassword) {
@@ -106,23 +117,28 @@ const AddUser: React.FC = () => {
       }
 
       const payload: AdminUserPayload = {
-        email: data.email,
+        fullName: data.fullName.trim(),
+        username: data.username.trim(),
+        email: data.email.trim(),
         password: data.password || "",
         roleId: finalRoleId,
-        name: data.name,
       };
 
       setIsSubmitting(true);
+
       try {
         const response = await addAdminUser(payload);
+
         showSnackbar(
-          response.data.message || "User added successfully",
+          response.data?.message || "User added successfully",
           { type: "success", duration: 3000 }
         );
+
         navigate(backPath);
       } catch (error: any) {
         showSnackbar(
           error?.response?.data?.message ||
+            error?.response?.data?.Message ||
             error?.message ||
             "Something went wrong. Please try again.",
           { type: "error", duration: 3000 }
@@ -130,24 +146,36 @@ const AddUser: React.FC = () => {
       } finally {
         setIsSubmitting(false);
       }
-    } else if (mode === "edit" && id) {
+
+      return;
+    }
+
+    if (mode === "edit" && id) {
       const payload: AdminUserUpdatePayload = {
-        email: data.email,
+        id,
+        fullName: data.fullName.trim(),
+        username: data.username.trim(),
+        email: data.email.trim(),
         roleId: finalRoleId,
-        name: data.name,
       };
 
       setIsSubmitting(true);
+
       try {
-        const response = await editAdminUser(payload, parseInt(id, 10));
+        const response = await editAdminUser(payload, id);
+
         showSnackbar(
-          response.data.message || "User details updated successfully",
+          response.data?.message ||
+            response.data?.Message ||
+            "User details updated successfully",
           { type: "success", duration: 3000 }
         );
+
         navigate(backPath);
       } catch (error: any) {
         showSnackbar(
           error?.response?.data?.message ||
+            error?.response?.data?.Message ||
             error?.message ||
             "Something went wrong. Please try again.",
           { type: "error", duration: 3000 }

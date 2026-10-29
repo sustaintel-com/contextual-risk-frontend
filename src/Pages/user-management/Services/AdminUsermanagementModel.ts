@@ -1,31 +1,32 @@
+
 export interface AdminUserPayload {
+  username: string;
+  fullName: string;
   email: string;
   password: string;
   roleId: number;
-  name?: string;
 }
 
 export interface AdminUserUpdatePayload {
+  id?: string;
+  username: string;
+  fullName: string;
   email: string;
   roleId: number;
-  name?: string;
+  password?: string;
 }
 
-
 export interface AdminUser {
-  id: number;
+  id: string;
+  username: string;
+  fullName: string;
   email: string;
   role: string;
-  isActive: boolean;
-  isDeleted: boolean;
+  active: boolean | null;
 }
 
 export interface QueryLog {
-    id: number;
-
-    userEmail: string;
-
-    createdAt: string;
+  id: number;
+  userEmail: string;
+  createdAt: string;
 }
-
-

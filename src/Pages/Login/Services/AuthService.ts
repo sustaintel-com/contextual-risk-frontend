@@ -5,7 +5,7 @@ import axiosInstance from "../../../auth/interceptor";
 
 
 export const userLogin = async (payload: LoginFormInputs): Promise<AxiosResponse<AuthResponse>> => {
-    const response = await axiosInstance.post<AuthResponse>("/Login", payload);
+    const response = await axiosInstance.post<AuthResponse>("/Auth/login", payload);
     return response;
 };
 

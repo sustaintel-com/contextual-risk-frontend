@@ -6,8 +6,8 @@ import type { LoginFormInputs } from './Services/AuthModel';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { forgotPassword, userLogin } from './Services/AuthService';
 import { login } from '../../redux-store/Slises/authSlice';
-import backgroundImage from '../../assets/Contextual Risk Radar Interface.png';
-import logoImage from '../../assets/risk-assessment.png';
+import backgroundImage from '../../assets/Contextual Risk Radar Dashboard.png';
+import logoImage from '../../assets/icons/Contextual Risk Radar Logo.png';
 import companyLogoImage from '../../assets/logo_comp.png';
 
 
@@ -35,7 +35,7 @@ const LoginPage: React.FC = () => {
     const openForgotPassword = () => {
         setForgotEmailError('');
         setIsResetLinkSent(false);
-        setForgotEmail(getValues('email') || '');
+        //setForgotEmail(getValues('email') || '');
         setIsForgotPasswordOpen(true);
     };
 
@@ -88,8 +88,8 @@ const LoginPage: React.FC = () => {
 
 
             <div className="bg-white/75 rounded-xl shadow-lg p-8 w-full max-w-[350px] md:mr-20">
-                <div className="flex items-center gap-2 mb-4">
-                    <img src={logoImage} alt="Logo" className="h-8 bg-[#EEE1DD] p-1 rounded-r-full" />
+                <div className="flex items-center gap-2 mb-4 justify-center">
+                    <img src={logoImage} alt="Logo" className="h-15 w-30 rounded-r-full" />
                     {/* <h1 className="text-lg font-bold tracking-wide text-gray-800">E&amp;S SCREEN</h1> */}
                 </div>
 
@@ -100,7 +100,7 @@ const LoginPage: React.FC = () => {
                             id="email"
                             className="w-full px-4 py-3 outline-none focus:border-l-4 focus:border-l-[#A06E58]  transition duration-200 bg-white text-gray-800 text-xs font-semibold" // Added bg-white and text-gray-800 for input fields
                             placeholder="Email"
-                            {...register('email', { required: 'Email is required' })}
+                            {...register('username', { required: 'Email is required' })}
                             required
                         />
                     </div>

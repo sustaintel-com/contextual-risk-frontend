@@ -6,20 +6,20 @@ import { useAppSelector } from "../redux-store/hooks";
 const RootRedirect = () => {
     const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
       //const isLoggedIn = true;
-    const role = useAppSelector((state) => state.auth.userDetails?.role);
+    const role = useAppSelector((state) => state.auth.userDetails?.user?.roleNames[0]);
     const navigate = useNavigate();
-    //const redirectPath = localStorage.getItem("redirectAfterLogin");
+    const redirectPath = localStorage.getItem("redirectAfterLogin");
     useEffect(() => {
         if (isLoggedIn) {
-            // if (role === "User") {
-            //     navigate(redirectPath || "/spatial-query", { replace: true });
-            // } else if (role === "Admin") {
+            if (role === "User") {
+                navigate(redirectPath || "/news", { replace: true });
+            } else if (role === "Admin") {
 
-            //     navigate(redirectPath || "/spatial-query", { replace: true });
-            // }
+                navigate(redirectPath || "/user-management", { replace: true });
+            }
 
-            // localStorage.removeItem("redirectAfterLogin");
-            navigate("/user-management", { replace: true });
+            localStorage.removeItem("redirectAfterLogin");
+    
         } else {
             navigate("/login");
         }
