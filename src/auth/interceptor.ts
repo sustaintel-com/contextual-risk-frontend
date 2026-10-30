@@ -1,42 +1,30 @@
-import axios, { AxiosError, type InternalAxiosRequestConfig } from "axios";
-import { store } from "../redux-store/store";
+import axios from "axios";
+
 import { logout } from "../redux-store/Slises/authSlice";
+import { store } from "../redux-store/store";
 
-
-// Create an Axios instance
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_ROOT_API_URL,
+    baseURL:  import.meta.env.VITE_ROOT_API_URL,
+    headers: {
+        "Content-Type": "application/json",
+    },
+    withCredentials: true,
 });
 
-// Request Interceptor for Token Handling
-axiosInstance.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
-    const state = store.getState();
-    const token = state.auth?.userDetails?.token;
-
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
-
-// Response Interceptor for Error Handling
 axiosInstance.interceptors.response.use(
-  (response) => response,
-  (error: AxiosError) => {
-    if (error.response?.status === 401) {
+    (response) => response,
+    (error) => {
+        if (error.response?.status === 401) {
+            store.dispatch(logout());
 
-      const currentPath = window.location.pathname + window.location.search;
-      localStorage.setItem("redirectAfterLogin", currentPath);
-      store.dispatch(logout());
+            // Redirect to login page
+            if (window.location.pathname !== "/login") {
+                window.location.href = "/login";
+            }
+        }
+
+        return Promise.reject(error);
     }
-    return Promise.reject(error.response?.data);
-  }
 );
 
 export default axiosInstance;

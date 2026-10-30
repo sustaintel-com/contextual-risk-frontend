@@ -1,27 +1,29 @@
+
 export interface LoginFormInputs {
     username: string;
     password: string;
 }
 
 export interface User {
-    fullName: string;
+    id: number | string;
+    fullName?: string;
     username: string;
-    password: string;
-    id?: number;
-    createdAt: string; 
-    updatedAt: string; 
+    email?: string;
     roleNames: string[];
+    createdAt?: string;
+    updatedAt?: string;
 }
 
 export interface AuthResponse {
-    user?: User;
-    token: string;
-    username: string;
-    role: string;
-    id: number;
+    user: User;
 }
 
 export interface AuthState {
+    userDetails: User | null;
     isLoggedIn: boolean;
-    userDetails: AuthResponse | null;
+    isLoading: boolean;
+}
+
+export interface ApiResponse<T> {
+    user: T;
 }

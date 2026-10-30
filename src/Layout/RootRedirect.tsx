@@ -3,30 +3,38 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useAppSelector } from "../redux-store/hooks";
 
-const RootRedirect = () => {
-    const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
-      //const isLoggedIn = true;
-    const role = useAppSelector((state) => state.auth.userDetails?.user?.roleNames[0]);
+const RootRedirect: React.FC = () => {
+
+    const isLoggedIn = useAppSelector(
+        (state) => state.auth.isLoggedIn
+    );
+
+    const role = useAppSelector(
+        (state) => state.auth.userDetails?.roleNames?.[0]
+    );
+
     const navigate = useNavigate();
-    const redirectPath = localStorage.getItem("redirectAfterLogin");
+
     useEffect(() => {
-        if (isLoggedIn) {
-            if (role === "User") {
-                navigate(redirectPath || "/news", { replace: true });
-            } else if (role === "Admin") {
 
-                navigate(redirectPath || "/user-management", { replace: true });
-            }
-
-            localStorage.removeItem("redirectAfterLogin");
-    
-        } else {
-            navigate("/login");
+        if (!isLoggedIn) {
+            navigate("/login", { replace: true });
+            return;
         }
+
+        if (role === "Admin") {
+            navigate("/user-management", { replace: true });
+        }
+        else if (role === "User") {
+            navigate("/news", { replace: true });
+        }
+        else {
+            navigate("/unauthorized", { replace: true });
+        }
+
     }, [isLoggedIn, role, navigate]);
 
-
-    return null; 
+    return null;
 };
 
 export default RootRedirect;
